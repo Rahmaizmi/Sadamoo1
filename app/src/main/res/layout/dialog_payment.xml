@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Header -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Konfirmasi Pembayaran"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/quicksand"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Package Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/payment_info_background"
+            android:padding="16dp"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/tvPackageName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Paket Premium"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/quicksand" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rp 120.000"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#4A90E2"
+                android:fontFamily="@font/quicksand"
+                android:layout_marginTop="4dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kode Pembayaran:"
+                android:textSize="12sp"
+                android:textColor="#757575"
+                android:fontFamily="@font/quicksand"
+                android:layout_marginTop="12dp" />
+
+            <TextView
+                android:id="@+id/tvPaymentCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SADA123456"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/quicksand"
+                android:background="@drawable/payment_code_background"
+                android:padding="8dp"
+                android:layout_marginTop="4dp" />
+
+        </LinearLayout>
+
+        <!-- Payment Instructions -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Silakan lakukan pembayaran melalui QRIS atau transfer bank dengan kode pembayaran di atas."
+            android:textSize="12sp"
+            android:textColor="#757575"
+            android:fontFamily="@font/quicksand"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCancelPayment"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="Batal"
+                android:background="@drawable/button_cancel"
+                android:textColor="#757575"
+                android:fontFamily="@font/quicksand"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btnConfirmPayment"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="Konfirmasi Pembayaran"
+                android:background="@drawable/button_primary"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/quicksand" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

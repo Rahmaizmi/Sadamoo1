@@ -17,6 +17,11 @@ import com.example.sadamoo.users.adapters.HistoryAdapter
 import com.example.sadamoo.users.data.Detection
 import com.example.sadamoo.users.data.DetectionRoomDatabase
 import com.example.sadamoo.users.dialogs.AdvancedFilterDialog
+import com.example.sadamoo.utils.applyStatusBarPadding
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+
+
 
 class HistoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHistoryBinding
@@ -28,6 +33,7 @@ class HistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHistoryBinding.inflate(layoutInflater)
+        binding.root.applyStatusBarPadding()
         setContentView(binding.root)
 
         setupBottomNavigation()
@@ -49,23 +55,33 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        historyAdapter = HistoryAdapter(filteredHistory) { detection ->
-            val intent = Intent(this, ScanResultActivity::class.java).apply {
-                putExtra("image", detection.uri)
-                putExtra("cattle_type", detection.disease_name ?: "Tidak diketahui")
-                putExtra("description", detection.description ?: "")
-                putExtra("confidence_score", detection.confidence)
-                putExtra("detected_at", detection.detectedAt)
-                putExtra("is_from_history", true)
+        historyAdapter = HistoryAdapter(
+            filteredHistory,
+            onItemClick = { detection ->
+                val intent = Intent(this, ScanResultActivity::class.java).apply {
+                    putExtra("image", detection.uri)
+                    putExtra("cattle_type", detection.disease_name ?: "Tidak diketahui")
+                    putExtra("description", detection.description ?: "")
+                    putExtra("confidence_score", detection.confidence)
+                    putExtra("detected_at", detection.detectedAt)
+                    putExtra("is_from_history", true)
+                }
+                startActivity(intent)
+            },
+            onDeleteClick = { detection ->
+                val dao = DetectionRoomDatabase.getDatabase(this).detectionDao()
+                lifecycleScope.launch {
+                    dao.delete(detection)
+                }
             }
-            startActivity(intent)
-        }
+        )
 
         binding.rvHistory.apply {
             layoutManager = LinearLayoutManager(this@HistoryActivity)
             adapter = historyAdapter
         }
     }
+
 
     private fun setupSearch() {
         binding.etSearch.addTextChangedListener(object : TextWatcher {
@@ -240,4 +256,3 @@ class HistoryActivity : AppCompatActivity() {
         }
     }
 }
-

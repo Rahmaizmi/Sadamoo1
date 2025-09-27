@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.sadamoo.databinding.ActivityMainBinding
 import com.example.sadamoo.users.SapiPagerAdapter
 import com.google.firebase.auth.FirebaseAuth
+import com.example.sadamoo.utils.applyStatusBarPadding
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        binding.root.applyStatusBarPadding()
         setContentView(binding.root)
 
         auth = FirebaseAuth.getInstance()
@@ -126,7 +129,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.navProfil.setOnClickListener {
             setActiveNav(binding.navProfil)
-            // startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 

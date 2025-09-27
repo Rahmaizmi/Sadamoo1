@@ -9,6 +9,8 @@ import com.example.sadamoo.users.adapters.ChatAdapter
 import com.example.sadamoo.users.models.ChatMessage
 import com.example.sadamoo.users.models.MessageType
 import java.util.*
+import com.example.sadamoo.utils.applyStatusBarPadding
+
 
 class ChatConsultationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatConsultationBinding
@@ -18,6 +20,7 @@ class ChatConsultationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityChatConsultationBinding.inflate(layoutInflater)
+        binding.root.applyStatusBarPadding()
         setContentView(binding.root)
 
         val doctorName = intent.getStringExtra("doctor_name") ?: "Dr. Ahmad Veteriner"
@@ -36,15 +39,20 @@ class ChatConsultationActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.btnCall.setOnClickListener {
-            Toast.makeText(this, "Fitur panggilan video - Premium feature!", Toast.LENGTH_SHORT).show()
-        }
 
         binding.btnAttachment.setOnClickListener {
             Toast.makeText(this, "Kirim foto hasil scan", Toast.LENGTH_SHORT).show()
             // TODO: Implement file picker
         }
     }
+    private fun getSiangTime(): Date {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 13) // jam 1 siang
+        calendar.set(Calendar.MINUTE, Random().nextInt(60)) // menit acak biar realistis
+        calendar.set(Calendar.SECOND, Random().nextInt(60))
+        return calendar.time
+    }
+
 
     private fun setupChat() {
         chatAdapter = ChatAdapter(chatMessages)
@@ -68,35 +76,35 @@ class ChatConsultationActivity : AppCompatActivity() {
             ChatMessage(
                 id = "1",
                 message = "Selamat siang! Saya Dr. $doctorName. Ada yang bisa saya bantu terkait kesehatan sapi Anda?",
-                timestamp = Calendar.getInstance().apply { add(Calendar.MINUTE, -30) }.time,
+                timestamp = getSiangTime(),
                 type = MessageType.RECEIVED,
                 senderName = doctorName
             ),
             ChatMessage(
                 id = "2",
                 message = "Selamat siang dokter. Sapi saya baru saja di-scan dan terdeteksi Lumpy Skin Disease. Bagaimana penanganan yang tepat?",
-                timestamp = Calendar.getInstance().apply { add(Calendar.MINUTE, -28) }.time,
+                timestamp = getSiangTime(),
                 type = MessageType.SENT,
                 senderName = "Anda"
             ),
             ChatMessage(
                 id = "3",
                 message = "Baik, LSD memang perlu penanganan segera. Apakah sapi sudah menunjukkan gejala benjolan di kulit?",
-                timestamp = Calendar.getInstance().apply { add(Calendar.MINUTE, -25) }.time,
+                timestamp = getSiangTime(),
                 type = MessageType.RECEIVED,
                 senderName = doctorName
             ),
             ChatMessage(
                 id = "4",
                 message = "Ya dokter, sudah ada beberapa benjolan di bagian leher dan punggung. Ukurannya sekitar 3-4 cm.",
-                timestamp = Calendar.getInstance().apply { add(Calendar.MINUTE, -23) }.time,
+                timestamp = getSiangTime(),
                 type = MessageType.SENT,
                 senderName = "Anda"
             ),
             ChatMessage(
                 id = "5",
                 message = "Saya akan berikan rekomendasi pengobatan. Pertama, isolasi sapi dari ternak lain. Kedua, berikan perawatan suportif dengan antibiotik untuk mencegah infeksi sekunder.",
-                timestamp = Calendar.getInstance().apply { add(Calendar.MINUTE, -20) }.time,
+                timestamp = getSiangTime(),
                 type = MessageType.RECEIVED,
                 senderName = doctorName
             )

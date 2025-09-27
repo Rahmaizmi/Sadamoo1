@@ -56,6 +56,7 @@
         <activity android:name=".users.ScanResultActivity" />
         <activity android:name=".users.HistoryActivity" />
         <activity android:name=".users.ChatConsultationActivity" />
+        <activity android:name=".users.ProfileActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

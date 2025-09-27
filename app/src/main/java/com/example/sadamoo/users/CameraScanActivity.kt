@@ -21,6 +21,12 @@ import java.io.File
 import java.nio.ByteBuffer
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import androidx.activity.result.contract.ActivityResultContracts
+import com.example.sadamoo.R
+import android.net.Uri
+import com.example.sadamoo.utils.applyStatusBarPadding
+
+
 
 class CameraScanActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraScanBinding
@@ -28,14 +34,30 @@ class CameraScanActivity : AppCompatActivity() {
     private lateinit var cameraExecutor: ExecutorService
     private var getFile: File? = null
 
+    private var camera: Camera? = null
+    private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
+    private var isFlashOn = false
+
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     }
 
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            val inputStream = contentResolver.openInputStream(uri)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream?.close()
+            if (bitmap != null) runModel(bitmap)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCameraScanBinding.inflate(layoutInflater)
+        binding.root.applyStatusBarPadding()
         setContentView(binding.root)
 
         // Check camera permissions
@@ -61,9 +83,9 @@ class CameraScanActivity : AppCompatActivity() {
             capturePhoto()
         }
 
-        // Gallery button (optional)
+        // Gallery button
         binding.btnGallery.setOnClickListener {
-            Toast.makeText(this, "Fitur galeri - Coming Soon!", Toast.LENGTH_SHORT).show()
+            pickImageLauncher.launch("image/*")
         }
 
         // Flash toggle
@@ -73,7 +95,7 @@ class CameraScanActivity : AppCompatActivity() {
 
         // Switch camera button
         binding.btnSwitchCamera.setOnClickListener {
-            Toast.makeText(this, "Switch camera - Coming Soon!", Toast.LENGTH_SHORT).show()
+            switchCamera()
         }
     }
 
@@ -94,14 +116,16 @@ class CameraScanActivity : AppCompatActivity() {
                     .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                     .build()
 
-                // Select back camera as default
-                val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+                // Pilih kamera (default back)
+                val cameraSelector = CameraSelector.Builder()
+                    .requireLensFacing(lensFacing)
+                    .build()
 
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
 
-                // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
+                // Bind dan simpan instance kamera
+                camera = cameraProvider.bindToLifecycle(
                     this, cameraSelector, preview, imageCapture
                 )
 
@@ -267,7 +291,23 @@ class CameraScanActivity : AppCompatActivity() {
     }
 
     private fun toggleFlash() {
-        Toast.makeText(this, "Flash toggle - Coming Soon!", Toast.LENGTH_SHORT).show()
+        camera?.cameraControl?.enableTorch(!isFlashOn)
+        isFlashOn = !isFlashOn
+
+        if (isFlashOn) {
+            binding.btnFlash.setImageResource(R.drawable.ic_flash_on)
+        } else {
+            binding.btnFlash.setImageResource(R.drawable.ic_flash_off)
+        }
+    }
+
+    private fun switchCamera() {
+        lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK) {
+            CameraSelector.LENS_FACING_FRONT
+        } else {
+            CameraSelector.LENS_FACING_BACK
+        }
+        startCamera()
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {

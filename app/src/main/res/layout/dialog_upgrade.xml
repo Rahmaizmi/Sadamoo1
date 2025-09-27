@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Upgrade ke Premium"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/quicksand" />
+
+            <ImageButton
+                android:id="@+id/btnClose"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_close"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                app:tint="#757575" />
+
+        </LinearLayout>
+
+        <!-- Package Options -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="20dp">
+
+            <!-- Basic Package -->
+            <Button
+                android:id="@+id/btnBasicPackage"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Basic - Rp 25.000 (1 Bulan)"
+                android:textSize="14sp"
+                android:background="@drawable/package_button"
+                android:textColor="#4A90E2"
+                android:fontFamily="@font/quicksand"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Standard Package -->
+            <Button
+                android:id="@+id/btnStandardPackage"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Standard - Rp 65.000 (3 Bulan)"
+                android:textSize="14sp"
+                android:background="@drawable/package_button"
+                android:textColor="#4A90E2"
+                android:fontFamily="@font/quicksand"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Premium Package -->
+            <Button
+                android:id="@+id/btnPremiumPackage"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Premium - Rp 120.000 (6 Bulan)"
+                android:textSize="14sp"
+                android:background="@drawable/package_button_recommended"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/quicksand"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Ultimate Package -->
+            <Button
+                android:id="@+id/btnUltimatePackage"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Ultimate - Rp 200.000 (12 Bulan)"
+                android:textSize="14sp"
+                android:background="@drawable/package_button"
+                android:textColor="#4A90E2"
+                android:fontFamily="@font/quicksand" />
+
+        </LinearLayout>
+
+        <!-- Action Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnLater"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:text="Nanti Saja"
+                android:background="@drawable/button_cancel"
+                android:textColor="#757575"
+                android:fontFamily="@font/quicksand"
+                android:layout_marginEnd="8dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

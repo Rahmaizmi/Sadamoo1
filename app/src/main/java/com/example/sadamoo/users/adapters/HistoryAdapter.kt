@@ -10,7 +10,8 @@ import java.util.*
 
 class HistoryAdapter(
     private var historyList: List<Detection>,
-    private val onItemClick: (Detection) -> Unit
+    private val onItemClick: (Detection) -> Unit,
+    private val onDeleteClick: (Detection) -> Unit
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     inner class HistoryViewHolder(private val binding: ItemHistoryBinding) :
@@ -28,6 +29,12 @@ class HistoryAdapter(
 
                 root.setOnClickListener {
                     onItemClick(item)
+                }
+                // 🔹 Klik lama untuk hapus
+                root.setOnLongClickListener {
+                    onDeleteClick(item)
+                    true
+
                 }
             }
         }

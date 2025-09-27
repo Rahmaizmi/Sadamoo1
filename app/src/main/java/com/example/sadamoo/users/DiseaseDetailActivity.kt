@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.sadamoo.R
 import com.example.sadamoo.databinding.ActivityDiseaseDetailBinding
 import com.example.sadamoo.users.models.Disease
+import com.example.sadamoo.utils.applyStatusBarPadding
+
 
 class DiseaseDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDiseaseDetailBinding
@@ -17,6 +19,7 @@ class DiseaseDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDiseaseDetailBinding.inflate(layoutInflater)
+        binding.root.applyStatusBarPadding()
         setContentView(binding.root)
 
         val diseaseId = intent.getStringExtra("disease_id")

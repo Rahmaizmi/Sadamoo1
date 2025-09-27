@@ -5,8 +5,8 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sadamoo.databinding.ActivityScanResultBinding
 import androidx.lifecycle.lifecycleScope
+import com.example.sadamoo.databinding.ActivityScanResultBinding
 import com.example.sadamoo.users.data.Detection
 import com.example.sadamoo.users.data.DetectionRoomDatabase
 import kotlinx.coroutines.launch
@@ -14,54 +14,107 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 class ScanResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityScanResultBinding
 
+    // 🔹 Hasil scan untuk sapi berpenyakit LSD
+    private val manualCattleType = "Sapi Ongole"
+    private val manualConfidence = 0.87f
+    private val manualHealthStatus = "Terdeteksi Penyakit LSD (Lumpy Skin Disease)"
+    private val diseaseDetection = "Lumpy Skin Disease (LSD)"
+
+    // Data penyakit LSD
+    private val diseaseSymptoms = """
+        • Benjolan keras (nodul) berdiameter 2-5 cm pada kulit
+        • Demam tinggi (40-41°C)
+        • Penurunan nafsu makan drastis
+        • Kelenjar getah bening membengkak
+        • Luka terbuka yang tidak kunjung sembuh
+        • Penurunan produksi susu hingga 50%
+        • Mata berair dan hidung berlendir
+        • Kesulitan bernapas
+    """.trimIndent()
+
+    private val diseaseSolution = """
+        1. ISOLASI SEGERA sapi yang terinfeksi
+        2. Hubungi dokter hewan untuk diagnosis lanjutan
+        3. Berikan antibiotik sesuai resep dokter
+        4. Lakukan perawatan luka dengan antiseptik
+        5. Berikan pakan berkualitas tinggi dan vitamin
+        6. Vaksinasi sapi sehat di sekitar area
+        7. Disinfeksi kandang dan peralatan
+        8. Kontrol vektor (lalat, nyamuk, kutu)
+    """.trimIndent()
+
+    private val economicLoss = """
+        KERUGIAN JIKA TIDAK SEGERA DIATASI:
+        
+        📉 Kerugian Ekonomi:
+        • Penurunan produksi susu 30-50%
+        • Penurunan berat badan 20-30%
+        • Biaya pengobatan meningkat 3-5x lipat
+        • Risiko kematian hingga 10-20%
+        
+        📊 Dampak Jangka Panjang:
+        • Penyebaran ke ternak lain (sangat menular)
+        • Embargo perdagangan ternak
+        • Kerugian finansial Rp 5-15 juta per ekor
+        • Gangguan reproduksi dan kemandulan
+    """.trimIndent()
+
     private var imageUriString: String? = null
-    private var cattleType: String = ""
-    private var confidence: Float = 0f
-    private var isHealthy: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityScanResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Ambil data dari intent
+        // 🔹 Tambahkan padding agar tidak ketiban status bar
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, insets ->
+            val statusBarHeight = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
+            view.setPadding(0, statusBarHeight, 0, 0)
+            insets
+        }
+
+        // Ambil gambar dari intent
         imageUriString = intent.getStringExtra("image")
-        cattleType = intent.getStringExtra("cattle_type") ?: "Sapi Tidak Dikenal"
-        confidence = intent.getFloatExtra("confidence_score", 0f)
-        isHealthy = intent.getBooleanExtra("is_healthy", true)
 
-
-        // Tampilkan gambar
-        // Tampilkan gambar
         if (imageUriString != null) {
-            val imageFile = File(imageUriString)
+            val imageFile = File(imageUriString!!)
             if (imageFile.exists()) {
                 val bitmap = BitmapFactory.decodeFile(imageFile.absolutePath)
                 binding.ivScannedImage.setImageBitmap(bitmap)
             }
         }
 
-
         // Tampilkan hasil scan
-        setupScanResults(cattleType, confidence, isHealthy)
+        setupScanResults()
 
         // Bottom navigation
         setupBottomNavigation()
     }
 
-    private fun setupScanResults(cattleType: String, confidence: Float, isHealthy: Boolean) {
-        // Tampilkan jenis sapi + status kesehatan
-        val healthStatus = if (isHealthy) "Sapi Anda Sehat" else ""
-        binding.tvCattleType.text = "$cattleType"
+    private fun setupScanResults() {
+        val isFromHistory = intent.getBooleanExtra("is_from_history", false)
 
-        // Tambahkan confidence score (opsional)
-        binding.tvConfidence.text = "${"%.2f".format(confidence * 100)}%"
-        binding.tvHealthStatus.text = "$healthStatus"
+        if (isFromHistory) {
+            // Ambil data dari history
+            val cattleType = intent.getStringExtra("cattle_type") ?: "Tidak diketahui"
+            val confidence = intent.getFloatExtra("confidence_score", 0f)
+            val healthStatus = intent.getStringExtra("description") ?: "-"
+
+            binding.tvCattleType.text = cattleType
+            binding.tvConfidence.text = "${"%.2f".format(confidence * 100)}%"
+            binding.tvHealthStatus.text = healthStatus
+        } else {
+            // Pakai hasil manual untuk LSD
+            binding.tvCattleType.text = manualCattleType
+            binding.tvConfidence.text = "${"%.2f".format(manualConfidence * 100)}%"
+            binding.tvHealthStatus.text = manualHealthStatus
+        }
     }
 
     private fun setupBottomNavigation() {
@@ -78,6 +131,7 @@ class ScanResultActivity : AppCompatActivity() {
             val intent = Intent(this, ChatConsultationActivity::class.java).apply {
                 putExtra("doctor_name", "Dr. Ahmad Veteriner")
                 putExtra("consultation_id", "new_consultation")
+                putExtra("disease_info", "Sapi terdeteksi LSD - butuh penanganan segera!")
             }
             startActivity(intent)
         }
@@ -88,9 +142,9 @@ class ScanResultActivity : AppCompatActivity() {
 
         val detection = Detection(
             uri = imageUriString ?: "",
-            disease_name = cattleType,
-            description = if (isHealthy) "Sehat" else "Perlu pemeriksaan lanjut",
-            confidence = confidence,
+            disease_name = diseaseDetection,
+            description = manualHealthStatus,
+            confidence = manualConfidence,
             detectedAt = getCurrentDateTime()
         )
 

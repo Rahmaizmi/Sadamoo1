@@ -59,13 +59,7 @@
         </LinearLayout>
 
         <!-- Call Button -->
-        <ImageButton
-            android:id="@+id/btnCall"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_video_call"
-            android:background="?android:attr/selectableItemBackgroundBorderless"
-            app:tint="@android:color/white" />
+
 
     </LinearLayout>
 

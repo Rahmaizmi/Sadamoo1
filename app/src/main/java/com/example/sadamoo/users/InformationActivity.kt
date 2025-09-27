@@ -15,6 +15,8 @@ import com.example.sadamoo.R
 import com.example.sadamoo.databinding.ActivityInformationBinding
 import com.example.sadamoo.users.adapters.DiseaseAdapter
 import com.example.sadamoo.users.models.Disease
+import com.example.sadamoo.utils.applyStatusBarPadding
+
 
 class InformationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInformationBinding
@@ -25,6 +27,7 @@ class InformationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInformationBinding.inflate(layoutInflater)
+        binding.root.applyStatusBarPadding()
         setContentView(binding.root)
 
         setupBottomNavigation()
