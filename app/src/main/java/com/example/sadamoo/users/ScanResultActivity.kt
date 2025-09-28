@@ -16,6 +16,8 @@ import java.util.Date
 import java.util.Locale
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ScanResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityScanResultBinding
@@ -95,6 +97,7 @@ class ScanResultActivity : AppCompatActivity() {
 
         // Bottom navigation
         setupBottomNavigation()
+        saveToHistory()
     }
 
     private fun setupScanResults() {
@@ -156,6 +159,33 @@ class ScanResultActivity : AppCompatActivity() {
             }
         }
     }
+
+    // Tambahkan di ScanResultActivity.kt
+    private fun saveToHistory() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser != null) {
+            val scanData = hashMapOf(
+                "userId" to currentUser.uid,
+                "cattleType" to (intent.getStringExtra("cattle_type") ?: "Unknown"),
+                "diseaseDetected" to (intent.getStringExtra("disease_detected") ?: "Unknown"),
+                "severity" to (intent.getStringExtra("severity") ?: "Unknown"),
+                "confidence" to intent.getFloatExtra("confidence_score", 0f),
+                "scanDate" to com.google.firebase.Timestamp.now(),
+                "isHealthy" to intent.getBooleanExtra("is_healthy", false)
+            )
+
+            FirebaseFirestore.getInstance().collection("scan_history")
+                .add(scanData)
+                .addOnSuccessListener {
+                    // History saved successfully
+                }
+                .addOnFailureListener {
+                    // Handle error
+                }
+        }
+    }
+
+
 
     private fun getCurrentDateTime(): String {
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())

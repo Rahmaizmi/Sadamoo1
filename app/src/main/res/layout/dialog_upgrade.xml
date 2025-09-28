@@ -50,51 +50,55 @@
             android:layout_marginBottom="20dp">
 
             <!-- Basic Package -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnBasicPackage"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Basic - Rp 25.000 (1 Bulan)"
+                android:text="Paket 1 - Rp 25.000 (1 x scan)"
                 android:textSize="14sp"
                 android:background="@drawable/package_button"
                 android:textColor="#4A90E2"
                 android:fontFamily="@font/quicksand"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:textAllCaps="false"/>
 
             <!-- Standard Package -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnStandardPackage"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Standard - Rp 65.000 (3 Bulan)"
+                android:text="Paket 2 - Rp 50.000 (1 x scan + konsultasi dengan dokter)"
                 android:textSize="14sp"
                 android:background="@drawable/package_button"
                 android:textColor="#4A90E2"
                 android:fontFamily="@font/quicksand"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:textAllCaps="false"/>
 
             <!-- Premium Package -->
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnPremiumPackage"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Premium - Rp 120.000 (6 Bulan)"
+                android:text="Paket 3 - Rp 100.000 (3 x scan + konsultasi dengn dokter)"
+                android:textSize="14sp"
+                android:background="@drawable/package_button"
+                android:textColor="#4A90E2"
+                android:fontFamily="@font/quicksand"
+                android:layout_marginBottom="8dp"
+                android:textAllCaps="false"/>
+
+            <!-- Ultimate Package -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnUltimatePackage"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Paket 4 - Rp 200.000 (Unlimited scan + konsultasi dengan dokter)"
                 android:textSize="14sp"
                 android:background="@drawable/package_button_recommended"
                 android:textColor="@android:color/white"
                 android:fontFamily="@font/quicksand"
-                android:layout_marginBottom="8dp" />
-
-            <!-- Ultimate Package -->
-            <Button
-                android:id="@+id/btnUltimatePackage"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Ultimate - Rp 200.000 (12 Bulan)"
-                android:textSize="14sp"
-                android:background="@drawable/package_button"
-                android:textColor="#4A90E2"
-                android:fontFamily="@font/quicksand" />
+                android:textAllCaps="false"/>
 
         </LinearLayout>
 
@@ -104,7 +108,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnLater"
                 android:layout_width="0dp"
                 android:layout_height="44dp"
@@ -113,7 +117,8 @@
                 android:background="@drawable/button_cancel"
                 android:textColor="#757575"
                 android:fontFamily="@font/quicksand"
-                android:layout_marginEnd="8dp" />
+                android:layout_marginEnd="8dp"
+                android:textAllCaps="false"/>
 
         </LinearLayout>
 
