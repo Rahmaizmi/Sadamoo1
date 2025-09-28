@@ -57,6 +57,10 @@
         <activity android:name=".users.HistoryActivity" />
         <activity android:name=".users.ChatConsultationActivity" />
         <activity android:name=".users.ProfileActivity" />
+        <activity android:name=".users.EditProfileActivity" />
+        <activity android:name=".users.SettingsActivity" />
+        <activity android:name=".users.HelpSupportActivity" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

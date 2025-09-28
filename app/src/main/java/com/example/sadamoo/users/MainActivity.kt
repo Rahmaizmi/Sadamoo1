@@ -189,9 +189,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showUpgradeDialog() {
-        // TODO: Show premium upgrade dialog
-        android.widget.Toast.makeText(this, "Trial expired! Please upgrade to continue.", android.widget.Toast.LENGTH_LONG).show()
+        val dialog = com.example.sadamoo.users.dialogs.UpgradeDialogFragment()
+        dialog.show(supportFragmentManager, "UpgradeDialog")
     }
+
 
 
     private fun setActiveNav(activeNav: LinearLayout) {
