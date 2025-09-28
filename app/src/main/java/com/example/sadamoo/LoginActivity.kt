@@ -7,9 +7,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sadamoo.admin.AdminActivity
 import com.example.sadamoo.databinding.ActivityLoginBinding
+import com.example.sadamoo.users.DoctorActivity
 import com.example.sadamoo.users.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlin.jvm.java
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -107,8 +109,15 @@ class LoginActivity : AppCompatActivity() {
                             startActivity(Intent(this, AdminActivity::class.java))
                         }
                         "user" -> {
-                            Toast.makeText(this, "Login berhasil!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "Login berhasil sebagai User!", Toast.LENGTH_SHORT).show()
                             startActivity(Intent(this, MainActivity::class.java))
+                        }
+                        "doctor" -> {
+                            Toast.makeText(this, "Login berhasil sebagai Dokter!", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, DoctorActivity::class.java))
+                        }
+                        else -> {
+                            Toast.makeText(this, "Role tidak dikenal: $role", Toast.LENGTH_SHORT).show()
                         }
                     }
                     finish()
@@ -120,4 +129,5 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
 }

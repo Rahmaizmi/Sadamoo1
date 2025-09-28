@@ -33,7 +33,7 @@ class ChatAdapter(private val messages: List<ChatMessage>) :
         fun bind(message: ChatMessage) {
             binding.tvMessage.text = message.message
             binding.tvTime.text = SimpleDateFormat("HH:mm", Locale.getDefault()).format(message.timestamp)
-            binding.tvSenderName.text = message.senderName
+//            binding.tvSenderName.text = message.senderName
         }
     }
 

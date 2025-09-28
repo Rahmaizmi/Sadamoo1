@@ -8,14 +8,25 @@ import com.example.sadamoo.databinding.ActivityChatConsultationBinding
 import com.example.sadamoo.users.adapters.ChatAdapter
 import com.example.sadamoo.users.models.ChatMessage
 import com.example.sadamoo.users.models.MessageType
-import java.util.*
 import com.example.sadamoo.utils.applyStatusBarPadding
-
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import java.util.*
 
 class ChatConsultationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatConsultationBinding
     private lateinit var chatAdapter: ChatAdapter
     private val chatMessages = mutableListOf<ChatMessage>()
+
+    private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+
+    private var chatRoomId: String = ""
+    private var currentUserId: String = ""
+    private var currentUserName: String = ""
+    private var doctorId: String = ""
+    private var doctorName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,36 +34,69 @@ class ChatConsultationActivity : AppCompatActivity() {
         binding.root.applyStatusBarPadding()
         setContentView(binding.root)
 
-        val doctorName = intent.getStringExtra("doctor_name") ?: "Dr. Ahmad Veteriner"
-        val consultationId = intent.getStringExtra("consultation_id") ?: "consultation_1"
+        currentUserId = auth.currentUser?.uid ?: ""
 
-        setupUI(doctorName)
-        setupChat()
-        loadInitialMessages(doctorName)
+        // 🔹 Cari dokter dari users (role = doctor)
+        db.collection("users")
+            .whereEqualTo("role", "doctor")
+            .limit(1)
+            .get()
+            .addOnSuccessListener { snapshot ->
+                if (!snapshot.isEmpty) {
+                    val doctorDoc = snapshot.documents[0]
+                    doctorId = doctorDoc.id
+                    doctorName = doctorDoc.getString("name") ?: "Dokter"
+
+                    // generate chatRoomId unik
+                    chatRoomId = if (currentUserId < doctorId) {
+                        "${currentUserId}_$doctorId"
+                    } else {
+                        "${doctorId}_$currentUserId"
+                    }
+
+                    binding.tvDoctorName.text = doctorName
+                    binding.tvOnlineStatus.text = "Online"
+
+                    // Load nama user
+                    loadCurrentUserName {
+                        setupUI()
+                        setupChat()
+                        listenForMessages()
+                    }
+                } else {
+                    Toast.makeText(this, "Tidak ada dokter ditemukan", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Gagal ambil data dokter", Toast.LENGTH_SHORT).show()
+                finish()
+            }
     }
 
-    private fun setupUI(doctorName: String) {
-        binding.tvDoctorName.text = doctorName
-        binding.tvOnlineStatus.text = "Online"
+    private fun loadCurrentUserName(onComplete: () -> Unit) {
+        db.collection("users")
+            .document(currentUserId)
+            .get()
+            .addOnSuccessListener { doc ->
+                currentUserName = doc.getString("name")
+                    ?: auth.currentUser?.displayName
+                            ?: "User"
+                onComplete()
+            }
+            .addOnFailureListener {
+                currentUserName = auth.currentUser?.displayName ?: "User"
+                onComplete()
+            }
+    }
 
-        binding.btnBack.setOnClickListener {
-            finish()
-        }
-
+    private fun setupUI() {
+        binding.btnBack.setOnClickListener { finish() }
 
         binding.btnAttachment.setOnClickListener {
             Toast.makeText(this, "Kirim foto hasil scan", Toast.LENGTH_SHORT).show()
-            // TODO: Implement file picker
         }
     }
-    private fun getSiangTime(): Date {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.HOUR_OF_DAY, 13) // jam 1 siang
-        calendar.set(Calendar.MINUTE, Random().nextInt(60)) // menit acak biar realistis
-        calendar.set(Calendar.SECOND, Random().nextInt(60))
-        return calendar.time
-    }
-
 
     private fun setupChat() {
         chatAdapter = ChatAdapter(chatMessages)
@@ -70,93 +114,73 @@ class ChatConsultationActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadInitialMessages(doctorName: String) {
-        // Mock initial conversation
-        val initialMessages = listOf(
-            ChatMessage(
-                id = "1",
-                message = "Selamat siang! Saya Dr. $doctorName. Ada yang bisa saya bantu terkait kesehatan sapi Anda?",
-                timestamp = getSiangTime(),
-                type = MessageType.RECEIVED,
-                senderName = doctorName
-            ),
-            ChatMessage(
-                id = "2",
-                message = "Selamat siang dokter. Sapi saya baru saja di-scan dan terdeteksi Lumpy Skin Disease. Bagaimana penanganan yang tepat?",
-                timestamp = getSiangTime(),
-                type = MessageType.SENT,
-                senderName = "Anda"
-            ),
-            ChatMessage(
-                id = "3",
-                message = "Baik, LSD memang perlu penanganan segera. Apakah sapi sudah menunjukkan gejala benjolan di kulit?",
-                timestamp = getSiangTime(),
-                type = MessageType.RECEIVED,
-                senderName = doctorName
-            ),
-            ChatMessage(
-                id = "4",
-                message = "Ya dokter, sudah ada beberapa benjolan di bagian leher dan punggung. Ukurannya sekitar 3-4 cm.",
-                timestamp = getSiangTime(),
-                type = MessageType.SENT,
-                senderName = "Anda"
-            ),
-            ChatMessage(
-                id = "5",
-                message = "Saya akan berikan rekomendasi pengobatan. Pertama, isolasi sapi dari ternak lain. Kedua, berikan perawatan suportif dengan antibiotik untuk mencegah infeksi sekunder.",
-                timestamp = getSiangTime(),
-                type = MessageType.RECEIVED,
-                senderName = doctorName
-            )
-        )
+    private fun listenForMessages() {
+        db.collection("chatRooms")
+            .document(chatRoomId)
+            .collection("messages")
+            .orderBy("timestamp", Query.Direction.ASCENDING)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    return@addSnapshotListener
+                }
 
-        chatMessages.addAll(initialMessages)
-        chatAdapter.notifyDataSetChanged()
-        scrollToBottom()
+                if (snapshot != null) {
+                    chatMessages.clear()
+                    for (doc in snapshot.documents) {
+                        val senderId = doc.getString("senderId") ?: ""
+                        val type = if (senderId == currentUserId) {
+                            MessageType.SENT
+                        } else {
+                            MessageType.RECEIVED
+                        }
+
+                        val message = ChatMessage(
+                            id = doc.id,
+                            senderName = currentUserName,
+                            message = doc.getString("text") ?: "",
+                            timestamp = doc.getTimestamp("timestamp")?.toDate() ?: Date(),
+                            type = type,
+                        )
+                        chatMessages.add(message)
+                    }
+                    chatAdapter.notifyDataSetChanged()
+                    scrollToBottom()
+                }
+            }
     }
 
     private fun sendMessage(message: String) {
-        val newMessage = ChatMessage(
-            id = UUID.randomUUID().toString(),
-            message = message,
-            timestamp = Date(),
-            type = MessageType.SENT,
-            senderName = "Anda"
+        val messageMap = hashMapOf(
+            "text" to message,
+            "senderId" to currentUserId,
+            "timestamp" to Date(),
+            "type" to "text",
+            "isRead" to false
         )
 
-        chatMessages.add(newMessage)
-        chatAdapter.notifyItemInserted(chatMessages.size - 1)
-        scrollToBottom()
-
-        // Simulate doctor reply after 2 seconds
-        binding.rvChat.postDelayed({
-            simulateDoctorReply(message)
-        }, 2000)
-    }
-
-    private fun simulateDoctorReply(userMessage: String) {
-        val doctorName = binding.tvDoctorName.text.toString()
-
-        val reply = when {
-            userMessage.lowercase().contains("obat") -> "Untuk pengobatan LSD, saya rekomendasikan pemberian antibiotik spektrum luas seperti Oxytetracycline. Dosis 10-20 mg/kg BB, diberikan secara intramuskular selama 3-5 hari."
-            userMessage.lowercase().contains("makanan") || userMessage.lowercase().contains("pakan") -> "Berikan pakan berkualitas tinggi dengan protein cukup. Tambahkan vitamin A, C, dan E untuk meningkatkan imunitas. Pastikan air minum selalu bersih dan tersedia."
-            userMessage.lowercase().contains("berapa lama") -> "Proses penyembuhan LSD biasanya memerlukan waktu 2-4 minggu dengan perawatan yang tepat. Benjolan akan mengering dan rontok secara bertahap."
-            userMessage.lowercase().contains("biaya") -> "Estimasi biaya pengobatan LSD sekitar Rp 500.000 - Rp 1.500.000 tergantung tingkat keparahan dan obat yang digunakan."
-            userMessage.lowercase().contains("terima kasih") -> "Sama-sama! Jangan ragu untuk menghubungi saya jika ada perkembangan atau pertanyaan lain. Semoga sapi Anda segera sembuh."
-            else -> "Baik, saya catat keluhan Anda. Untuk kasus ini, saya sarankan untuk melakukan observasi ketat dan segera hubungi saya jika ada perubahan kondisi."
-        }
-
-        val doctorMessage = ChatMessage(
-            id = UUID.randomUUID().toString(),
-            message = reply,
-            timestamp = Date(),
-            type = MessageType.RECEIVED,
-            senderName = doctorName
-        )
-
-        chatMessages.add(doctorMessage)
-        chatAdapter.notifyItemInserted(chatMessages.size - 1)
-        scrollToBottom()
+        db.collection("chatRooms")
+            .document(chatRoomId)
+            .collection("messages")
+            .add(messageMap)
+            .addOnSuccessListener {
+                db.collection("chatRooms")
+                    .document(chatRoomId)
+                    .set(
+                        mapOf(
+                            "lastMessage" to message,
+                            "lastSenderId" to currentUserId,
+                            "lastTimestamp" to Date(),
+                            "doctorId" to doctorId,
+                            "doctorName" to doctorName,
+                            "userId" to currentUserId,
+                            "userName" to currentUserName
+                        )
+                    )
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Gagal kirim pesan", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun scrollToBottom() {
