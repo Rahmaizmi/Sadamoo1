@@ -23,7 +23,7 @@ class Classifier(private val context: Context) {
     private val inputImageSize = 224
     private val confidenceThreshold = 0.6f
 
-    private val modelPath = "model_sadamoo_jenis_sapi.tflite"
+    private val modelPath = "model1.tflite"
     private val labelPath = "labels.txt"
     private val jsonPath = "description.json"
 

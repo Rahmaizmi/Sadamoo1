@@ -31,23 +31,19 @@ class UpgradeDialogFragment : DialogFragment() {
     private fun setupPackageButtons() {
         // Basic Package
         binding.btnBasicPackage.setOnClickListener {
-            selectPackage("Basic", "Rp 25.000", "1 Bulan")
+            selectPackage("Paket 1 -", "Rp 25.000", "1 Minggu")
         }
 
         // Standard Package
         binding.btnStandardPackage.setOnClickListener {
-            selectPackage("Standard", "Rp 65.000", "3 Bulan")
+            selectPackage("Paket 2 -", "Rp 50.000", "1 Bulan")
         }
 
         // Premium Package
         binding.btnPremiumPackage.setOnClickListener {
-            selectPackage("Premium", "Rp 120.000", "6 Bulan")
+            selectPackage("Paket - 3", "Rp 100.000", "1 Tahun")
         }
 
-        // Ultimate Package
-        binding.btnUltimatePackage.setOnClickListener {
-            selectPackage("Ultimate", "Rp 200.000", "12 Bulan")
-        }
     }
 
     private fun selectPackage(packageName: String, price: String, duration: String) {

@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/sapi_ongole" />
+                    android:src="@drawable/sapi_madura" />
 
                 <!-- Overlay untuk nama sapi -->
                 <LinearLayout
@@ -47,7 +47,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand"
-                        android:text="Sapi Ongole"
+                        android:text="Sapi Madura"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -56,177 +56,7 @@
 
             </androidx.cardview.widget.CardView>
 
-            <!-- Section Status Kesehatan (SAKIT) -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#FFEBEE"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/quicksand"
-                        android:text="Akurasi Deteksi"
-                        android:textColor="#C62828"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvConfidence"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/quicksand"
-                        android:text="87%"
-                        android:textColor="#C62828"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/quicksand"
-                        android:text="⚠️ Status Kesehatan"
-                        android:textColor="#C62828"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tvHealthStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand"
-                        android:text="Terdeteksi Penyakit LSD"
-                        android:textColor="#C62828"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Section Deteksi Penyakit -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#FFF3E0"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/quicksand"
-                        android:text="🔍 Deteksi Penyakit"
-                        android:textColor="#E65100"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand"
-                        android:text="Lumpy Skin Disease (LSD)\n\nPenyakit viral menular yang menyerang sapi, ditandai dengan benjolan keras pada kulit dan gejala sistemik lainnya."
-                        android:textColor="#E65100"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Section Ciri-ciri Penyakit -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#E3F2FD"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/quicksand"
-                        android:text="📋 Ciri-ciri Penyakit LSD"
-                        android:textColor="#1565C0"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand"
-                        android:text="• Benjolan keras (nodul) berdiameter 2-5 cm pada kulit\n• Demam tinggi (40-41°C)\n• Penurunan nafsu makan drastis\n• Kelenjar getah bening membengkak\n• Luka terbuka yang tidak kunjung sembuh\n• Penurunan produksi susu hingga 50%\n• Mata berair dan hidung berlendir\n• Kesulitan bernapas"
-                        android:textColor="#1565C0"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Section Solusi Mengatasi -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="#F3E5F5"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:fontFamily="@font/quicksand"
-                        android:text="💊 Solusi Mengatasi Penyakit"
-                        android:textColor="#7B1FA2"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/quicksand"
-                        android:text="1. ISOLASI SEGERA sapi yang terinfeksi\n2. Hubungi dokter hewan untuk diagnosis lanjutan\n3. Berikan antibiotik sesuai resep dokter\n4. Lakukan perawatan luka dengan antiseptik\n5. Berikan pakan berkualitas tinggi dan vitamin\n6. Vaksinasi sapi sehat di sekitar area\n7. Disinfeksi kandang dan peralatan\n8. Kontrol vektor (lalat, nyamuk, kutu)"
-                        android:textColor="#7B1FA2"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <!-- Section Kerugian Tidak Segera Diatasi -->
+            <!-- Section Status Kesehatan -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -237,7 +67,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#FFEBEE"
+                    android:background="#E8F5E9"
                     android:orientation="vertical"
                     android:padding="16dp">
 
@@ -246,17 +76,38 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:fontFamily="@font/quicksand"
-                        android:text="⚠️ Kerugian Jika Tidak Segera Diatasi"
-                        android:textColor="#C62828"
+                        android:text="Akurasi"
+                        android:textColor="#2E7D32"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/tvConfidence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/quicksand"
+                        android:text="95% "
+                        android:textColor="#2E7D32"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:fontFamily="@font/quicksand"
+                        android:text="Status Kesehatan"
+                        android:textColor="#2E7D32"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvHealthStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/quicksand"
-                        android:text="📉 Kerugian Ekonomi:\n• Penurunan produksi susu 30-50%\n• Penurunan berat badan 20-30%\n• Biaya pengobatan meningkat 3-5x lipat\n• Risiko kematian hingga 10-20%\n\n📊 Dampak Jangka Panjang:\n• Penyebaran ke ternak lain (sangat menular)\n• Embargo perdagangan ternak\n• Kerugian finansial Rp 5-15 juta per ekor\n• Gangguan reproduksi dan kemandulan"
-                        android:textColor="#C62828"
+                        android:text="Sapi Anda Sehat"
+                        android:textColor="#2E7D32"
                         android:textSize="14sp" />
 
                 </LinearLayout>

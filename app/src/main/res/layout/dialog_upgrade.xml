@@ -54,7 +54,7 @@
                 android:id="@+id/btnBasicPackage"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Paket 1 - Rp 25.000 (1 x scan)"
+                android:text="Paket 1 - Rp 25.000 (1 Minggu)"
                 android:textSize="14sp"
                 android:background="@drawable/package_button"
                 android:textColor="#4A90E2"
@@ -67,7 +67,7 @@
                 android:id="@+id/btnStandardPackage"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Paket 2 - Rp 50.000 (1 x scan + konsultasi dengan dokter)"
+                android:text="Paket 2 - Rp 50.000 (1 Bulan)"
                 android:textSize="14sp"
                 android:background="@drawable/package_button"
                 android:textColor="#4A90E2"
@@ -80,25 +80,14 @@
                 android:id="@+id/btnPremiumPackage"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Paket 3 - Rp 100.000 (3 x scan + konsultasi dengn dokter)"
-                android:textSize="14sp"
-                android:background="@drawable/package_button"
-                android:textColor="#4A90E2"
-                android:fontFamily="@font/quicksand"
-                android:layout_marginBottom="8dp"
-                android:textAllCaps="false"/>
-
-            <!-- Ultimate Package -->
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnUltimatePackage"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Paket 4 - Rp 200.000 (Unlimited scan + konsultasi dengan dokter)"
+                android:text="Paket 3 - Rp 100.000 (1 Tahun)"
                 android:textSize="14sp"
                 android:background="@drawable/package_button_recommended"
                 android:textColor="@android:color/white"
                 android:fontFamily="@font/quicksand"
+                android:layout_marginBottom="8dp"
                 android:textAllCaps="false"/>
+
 
         </LinearLayout>
 

@@ -1,5 +1,6 @@
-Sapi Angus
-Sapi Limosin
-Sapi Pasundan
-Sapi Peranakan Ongole
-Sapi Simental
+brangus
+cacingan
+limosin
+pasundan
+sapi ongole
+simental
